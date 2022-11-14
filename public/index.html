@@ -10,6 +10,8 @@
 <body>
     <h1>Google Sign-in</h1>
 
+    <hr>
+
     <div id="g_id_onload" data-client_id="656642856165-pf5bjna1nj68ahofeb9k7hn7488hrff8.apps.googleusercontent.com"
         data-auto_prompt="false" data-callback="handleCredentialResponse"></div>
     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
@@ -19,19 +21,24 @@
 
     <script>
         function handleCredentialResponse(response) {
-            // decodeJwtResponse() is a custom function defined by you
-            // to decode the credential response.
-            // const responsePayload = decodeJwtResponse(response.credential);
-
+            
             //Google Token : ID_TOKEN
-            console.log('id_token', response.credential);
+            // console.log('id_token', response.credential);
+            const body = {id_token: response.credential};
 
-            // console.log("ID: " + responsePayload.sub);
-            // console.log("Full Name: " + responsePayload.name);
-            // console.log("Given Name: " + responsePayload.given_name);
-            // console.log("Family Name: " + responsePayload.family_name);
-            // console.log("Image URL: " + responsePayload.picture);
-            // console.log("Email: " + responsePayload.email);
+            fetch('http://localhost:8080/api/auth/google', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then( resp => resp.json())
+                .then(resp => {
+                    console.log(resp);
+                })
+                .catch(console.warn)
+
         }
     </script>
 </body>

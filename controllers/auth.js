@@ -11,7 +11,6 @@ const login = async(req, res = response) => {
     const { correo, password } = req.body;
 
     try {
-      
         // Verificar si el email existe
         const usuario = await Usuario.findOne({ correo });
         if ( !usuario ) {
@@ -52,8 +51,18 @@ const login = async(req, res = response) => {
 
 }
 
+const googleSignIn = async (req, res = response) => {
+    const {id_token} = req.body;
+
+    res.json({
+        msg: 'Todo bien',
+        id_token
+    })
+}
+
 
 
 module.exports = {
-    login
+    login,
+    googleSignIn
 }
