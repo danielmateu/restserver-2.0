@@ -5,6 +5,7 @@ const Usuario = require('../models/usuario');
 
 const { generarJWT } = require('../helpers/generar-jwt');
 const { googleVerify } = require('../helpers/google-verify');
+// const usuario = require('../models/usuario');
 
 
 const login = async(req, res = response) => {
@@ -58,14 +59,42 @@ const googleSignIn = async (req, res = response) => {
     try {
         const {nombre, img, correo} = await googleVerify(id_token);
         // console.log(googleUser);
-        console.log({nombre,img,correo});
-        
+        // console.log({nombre,img,correo});
+
+        let usuario = await Usuario.findOne({correo});
+
+        if(!usuario){
+            //Tengo que crearlo
+            const data = { 
+                nombre,
+                correo,
+                img, 
+                password: '123456',
+                rol: 'USER_ROLE',
+                google: true
+            };
+
+            usuario = new Usuario(data);
+            await usuario.save();
+        }
+
+        //Si el usuario en DB 
+        if(!usuario.estado){
+            return res.status(401).json({
+                msg:'Hable con el administrador, usuario bloqueado'
+            })
+        }
+
+        //Generar JWT
+        const token = await generarJWT( usuario.id );
+
         res.json({
-            msg: 'Todo bien',
-            id_token
-        })
+            usuario,
+            token
+        });
+
     } catch (error) {
-        json.status(400).json({msg: 'El token no se pudo verificar'})
+        res.status(400).json({msg: 'El token no se pudo verificar'})
     }
 
 }
