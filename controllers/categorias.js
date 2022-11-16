@@ -65,11 +65,25 @@ const crearCategoria = async(req, res = response) => {
 }
 
 //actualizarCategoria 
+const actualizarCategoria = async (req, res = response) => {
+
+    const {id} = req.params;
+    const { estado, usuario, ...data } = req.body;
+
+    data.nombre = data.nombre.toUpperCase();
+    data.usuario = req.usuario._id;
+
+    const categoria = await Categoria.findByIdAndUpdate(id, data, {new:true});
+    
+    res.json(categoria);
+
+}
 
 //borrarCategoria - estado: false
 
 module.exports = {
     crearCategoria,
     obtenerCategorias,
-    obtenerCategoria
+    obtenerCategoria,
+    actualizarCategoria
 };

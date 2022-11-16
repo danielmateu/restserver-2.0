@@ -1,6 +1,6 @@
 
 const Role = require('../models/role');
-const {Usuario, Categoria} = require('../models');
+const { Usuario, Categoria } = require('../models');
 
 const esRoleValido = async(rol = '') => {
 
@@ -36,8 +36,6 @@ const existeCategoriaPorId = async( id ) => {
     }
     
 }
-
-
 
 module.exports = {
     esRoleValido,
