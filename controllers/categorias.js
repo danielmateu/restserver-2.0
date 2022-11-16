@@ -25,7 +25,6 @@ const obtenerCategorias = async (req, res = response) => {
 
 
 //obtenerCategoria - populate {}
-
 const obtenerCategoria = async(req, res = response) => {
 
     const {id} = req.params;
