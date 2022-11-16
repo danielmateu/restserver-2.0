@@ -4,9 +4,11 @@ const {
     crearCategoria, 
     obtenerCategorias, 
     obtenerCategoria, 
-    actualizarCategoria 
+    actualizarCategoria ,
+    borrarCategoria
 } = require('../controllers/categorias');
 const { existeCategoriaPorId } = require('../helpers/db-validators');
+const { esAdminRole } = require('../middlewares');
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -40,9 +42,15 @@ router.put('/:id',
     actualizarCategoria)
 
 //Eliminar categoria  - Privado . Admin, estado en FALSE
-router.delete('/:id', (req, res) => {
-    res.json('put - modificar estado, eliminar categoria');
-})
+router.delete('/:id', [
+    validarJWT,
+    esAdminRole,
+    check('id','No es un id de mongo válido').isMongoId(),
+    
+    check('id').custom(existeCategoriaPorId),
+    validarCampos
+
+],borrarCategoria)
 
 
 module.exports = router;
