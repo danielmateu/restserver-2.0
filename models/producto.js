@@ -35,5 +35,4 @@ ProductoSchema.methods.toJSON = function() {
     return data;
 }
 
-
 module.exports = model( 'Producto', ProductoSchema );

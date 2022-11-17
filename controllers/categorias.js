@@ -4,6 +4,7 @@ const { populate } = require("../models/categoria");
 
 
 //obtenerCategorias - paginado - total - populate
+
 const obtenerCategorias = async (req, res = response) => {
 
     const { limite = 5, desde = 0 } = req.query;
@@ -25,6 +26,7 @@ const obtenerCategorias = async (req, res = response) => {
 
 
 //obtenerCategoria - populate {}
+
 const obtenerCategoria = async(req, res = response) => {
 
     const {id} = req.params;
@@ -34,7 +36,7 @@ const obtenerCategoria = async(req, res = response) => {
     res.json(categoria);
 }
 
-
+//Creación Categoria
 const crearCategoria = async(req, res = response) => {
 
     const nombre = req.body.nombre.toUpperCase();
@@ -63,7 +65,7 @@ const crearCategoria = async(req, res = response) => {
 
 }
 
-//actualizarCategoria 
+//actualizar Categoria 
 const actualizarCategoria = async (req, res = response) => {
 
     const {id} = req.params;
